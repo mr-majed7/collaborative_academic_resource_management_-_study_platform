@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard</title>
+</head>
+<body>
+    <h4>Create Folder</h4>
+    <form action="/Folder/<%= Username %>" method="post">
+        <label for="title">
+            <input type="text" name="Title" id="title" placeholder="Folder Title">
+        </label>
+        <br>
+        Select Privacy:
+        <label>
+            <input type="radio" name="Privacy" value="private">
+            Private
+        </label>
+        
+        <label>
+            <input type="radio" name="Privacy" value="public">
+            Public
+        </label>
+        <br>
+        <button>Add Folder</button>
+    </form>
+</body>
+</html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adding Materials</title>
+</head>
+<body>
+
+    <section>
+        <h3>Add Books</h3>
+        <form action="/Books/<%= folder_id %>" >
+
+            <button>+Book</button>
+        </form>
+    </section>
+
+    <section> 
+        <h3>Add Lecture Notes :</h3>
+        <form action="/lectureNotes/<%=folder_id%>" >
+            <button>+Lecture Notes</button>
+        </form>
+    
+    </section>
+    <section> 
+        <h3>Add Lecture Videos:</h3>
+        <form action="/lectureVideos/<%= folder_id %>">
+
+            <button> +LectureVideo</button>
+        </form>
+    
+    </section>
+
+    <section> 
+        <h3>Add Slides:</h3>
+        <form action="/slides/<%= folder_id %>">
+
+            <button>+Slides</button>
+        </form>
+        
+    
+    </section>
+
+
+</body>
+</html>
