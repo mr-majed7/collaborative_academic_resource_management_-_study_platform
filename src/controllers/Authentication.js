@@ -1,10 +1,10 @@
-const User = require('../models/user');
+const User = require('../models/User');
 const bcryptjs = require('bcryptjs')
 const express = require("express")
 const app = express()
 const session = require('express-session');
-app.use(session({   
-    secret: 'secret',     
+app.use(session({
+    secret: 'secret',
     resave: true,
     saveUninitialized: true
 }));
@@ -16,7 +16,7 @@ module.exports.register =  async (req, res) => {
         await User.create({ Username, _id, Name, Email, Password: hash });
         req.session.currentUser = Username
         res.render('dashboard', {Username});
-        
+
     } catch (err) {
         console.error('Error inserting user:', err);
         res.status(500).json({ error: 'Error inserting user' });
@@ -25,7 +25,7 @@ module.exports.register =  async (req, res) => {
 
 module.exports.renderLoginForm = (req, res) => {
     res.render('login');
-}; 
+};
 
 
 module.exports.login = async (req, res) => {

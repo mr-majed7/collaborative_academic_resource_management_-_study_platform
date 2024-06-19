@@ -1,5 +1,5 @@
-const express = require('express'); 
-const app = express(); 
+const express = require('express');
+const app = express();
 const bcryptjs = require('bcryptjs');
 
 app.use(express.static('public'));
@@ -12,16 +12,16 @@ app.set('view engine', 'ejs');
 app.set('views', __dirname + '/views');
 
 // Import Sequelize models
-const sequelize = require('./config/database');
-const User = require('./models/user');
-const Folder = require('./models/folder');
-const Book = require('./models/book');
-const Slide = require('./models/slide');
-const LectureVideo = require('./models/lectureVideo');
-const LectureNotes = require('./models/lectureNotes');
-const PersonalNotes = require('./models/personalNotes');
+const db = require('./models');
+const User = require('./models/User');
+const Folder = require('./models/Folder');
+const Book = require('./models/Book');
+const Slide = require('./models/Slides');
+const LectureVideo = require('./models/LectureVideos');
+const LectureNotes = require('./models/LectureNotes');
+const PersonalNotes = require('./models/PersonalNotes');
 
-//Controllers Import 
+//Controllers Import
 const AuthenticationC = require('./controllers/Authentication');
 const FolderC = require('./controllers/FolderC');
 
@@ -29,14 +29,14 @@ const FolderC = require('./controllers/FolderC');
 //Routes Import
 const FolderRoutes = require('./routes/folderRoutes');
 const BookRoutes = require('./routes/bookRoutes');
-const lectureNotesRoutes = require('./routes/lectureNotesRoutes');  
+const lectureNotesRoutes = require('./routes/lectureNotesRoutes');
 const lectureVideosRoutes = require('./routes/lectureVideosRoutes');
 const slidesRoutes = require('./routes/slidesRoutes');
 
 
 const session = require('express-session');
-app.use(session({   
-    secret: 'secret',     
+app.use(session({
+    secret: 'secret',
     resave: true,
     saveUninitialized: true
 }));
@@ -47,7 +47,7 @@ app.use((req, res, next) => {
 });
 
 
-// Authentication 
+// Authentication
 app.post('/register', AuthenticationC.register);
 
 app.get("/login", AuthenticationC.renderLoginForm);
@@ -83,6 +83,8 @@ app.use("/lectureVideos", lectureVideosRoutes)
 app.use("/slides", slidesRoutes)
 
 
-app.listen(4000, () => {
-    console.log('Server is running on port 4000');
+db.sequelize.sync().then(() => {
+  app.listen(3000, () => {
+    console.log('Server is running on port 3000');
+  });
 });

@@ -1,4 +1,4 @@
-const LectureNotes = require('../models/lectureNotes')
+const LectureNotes = require('../models/LectureNotes')
 
 
 

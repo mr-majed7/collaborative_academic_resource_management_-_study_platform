@@ -1,4 +1,4 @@
-const LectureVideo = require('../models/lectureVideo')
+const LectureVideo = require('../models/LectureVideos')
 
 
 
@@ -9,7 +9,7 @@ module.exports.renderLectureVideos = async (req, res)=> {
 }
 
 module.exports.createLectureVideos = async (req, res)=> {
-    const {folder_id} = req.params  
+    const {folder_id} = req.params
     DateC = new Date()
     const {Title, FileLink, Progress, Privacy} = req.body
     await LectureVideo.create({Folder_id:folder_id, Title, FileLink, Date: DateC, Progress, Privacy})
