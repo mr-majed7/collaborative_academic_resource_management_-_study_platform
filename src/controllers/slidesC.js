@@ -1,6 +1,5 @@
-const Slide = require('../models/Slides')
-
-
+const db = require('../models')
+const Slide = db.slides
 
 
 module.exports.renderSlide = async (req, res)=> {

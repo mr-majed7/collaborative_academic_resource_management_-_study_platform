@@ -1,5 +1,5 @@
-const Folder = require('../models/Folder')
-
+const db = require('../models')
+const Folder = db.Folder
 
 
 module.exports.createFolder = async (req, res)=> {

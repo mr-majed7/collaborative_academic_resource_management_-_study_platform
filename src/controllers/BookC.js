@@ -1,7 +1,5 @@
-const Book = require('../models/Book')
-
-
-
+const db = require('../models')
+const Book = db.Book
 
 module.exports.renderBooks = async (req, res)=> {
     const {folder_id} = req.params

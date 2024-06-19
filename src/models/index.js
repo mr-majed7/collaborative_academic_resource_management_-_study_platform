@@ -31,6 +31,15 @@ fs
     db[model.name] = model;
   });
 
+db.User = require('./User')(sequelize, Sequelize);
+db.Folder = require('./Folder')(sequelize, Sequelize);
+db.Book = require('./Book')(sequelize, Sequelize);
+db.Slide = require('./Slides')(sequelize, Sequelize);
+db.LectureVideo = require('./LectureVideos')(sequelize, Sequelize);
+db.LectureNote = require('./LectureNotes')(sequelize, Sequelize);
+db.PersonalNote = require('./PersonalNotes')(sequelize, Sequelize);
+
+
 Object.keys(db).forEach(modelName => {
   if (db[modelName].associate) {
     db[modelName].associate(db);

@@ -12,6 +12,7 @@ app.set('view engine', 'ejs');
 app.set('views', __dirname + '/views');
 
 // Import Sequelize models
+const { sequelize } = require('./models')
 const db = require('./models');
 const User = require('./models/User');
 const Folder = require('./models/Folder');
@@ -48,6 +49,8 @@ app.use((req, res, next) => {
 
 
 // Authentication
+app.get('/register', AuthenticationC.renderRegisterForm);
+
 app.post('/register', AuthenticationC.register);
 
 app.get("/login", AuthenticationC.renderLoginForm);

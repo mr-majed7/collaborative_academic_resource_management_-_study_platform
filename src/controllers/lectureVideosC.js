@@ -1,7 +1,5 @@
-const LectureVideo = require('../models/LectureVideos')
-
-
-
+const db = require('../models')
+const LectureVideo = db.lectureVideos
 
 module.exports.renderLectureVideos = async (req, res)=> {
     const {folder_id} = req.params

@@ -1,7 +1,5 @@
-const LectureNotes = require('../models/LectureNotes')
-
-
-
+const db = require('../models')
+const LectureNotes = db.LectureNotes
 
 module.exports.renderLectureNotes = async (req, res)=> {
     const {folder_id} = req.params
@@ -9,7 +7,7 @@ module.exports.renderLectureNotes = async (req, res)=> {
 }
 
 module.exports.createLectureNotes = async (req, res)=> {
-    const {folder_id} = req.params  
+    const {folder_id} = req.params
     DateC = new Date()
     const {Title, FileLink, Progress, Privacy} = req.body
     await LectureNotes.create({Folder_id:folder_id, Title, FileLink, Date: DateC, Progress, Privacy})

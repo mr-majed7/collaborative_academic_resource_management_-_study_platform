@@ -1,4 +1,5 @@
-const User = require('../models/User');
+const db = require('../models');
+const User = db.User;
 const bcryptjs = require('bcryptjs')
 const express = require("express")
 const app = express()
@@ -9,11 +10,15 @@ app.use(session({
     saveUninitialized: true
 }));
 
+module.exports.renderRegisterForm = (req, res) => {
+  res.render('register');
+};
+
 module.exports.register =  async (req, res) => {
-    const { Username, _id, Name, Email, Password } = req.body;
+    const { Username, Name, Email, Institution, Password } = req.body;
     try {
         const hash = await bcryptjs.hash(Password, 10);
-        await User.create({ Username, _id, Name, Email, Password: hash });
+        await User.create({ Username, Name, Email, Password, Institution: hash });
         req.session.currentUser = Username
         res.render('dashboard', {Username});
 
