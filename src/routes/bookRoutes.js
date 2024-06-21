@@ -1,5 +1,5 @@
 const express = require('express');
-const router = express.Router({ mergeParams: true }); 
+const router = express.Router({ mergeParams: true });
 
 
 //controller import
@@ -10,8 +10,9 @@ router.get("/:folder_id", bookController.renderBooks);
 
 router.post("/:folder_id", bookController.createBook);
 
+router.put("/:folder_id/:book_id", bookController.updateBook);
+
+router.delete("/:folder_id/:book_id", bookController.deleteBook);
 
 
-
-
-module.exports = router; 
+module.exports = router;
