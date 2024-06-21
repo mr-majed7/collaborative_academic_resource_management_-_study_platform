@@ -4,8 +4,8 @@ body {
     padding: 0;
 }
 
-.login-page {
-    background: linear-gradient(to right, #6a11cb, #2575fc);
+.login-page, .create-account-page, .forgot-password-page {
+    background: linear-gradient(to right, #6a11cb, #2575fc, #a52a2a);
     color: white;
     display: flex;
     justify-content: center;
@@ -13,22 +13,23 @@ body {
     height: 100vh;
 }
 
-.login-container {
+.login-container, .create-account-container, .forgot-password-container {
     background: rgba(0, 0, 0, 0.7);
     padding: 20px;
     border-radius: 10px;
     text-align: center;
+    width: 300px;
 }
 
-.login-container h1 {
+.login-container h1, .create-account-container h1, .forgot-password-container h1 {
     margin-bottom: 10px;
 }
 
-.login-container p {
+.login-container p, .create-account-container p, .forgot-password-container p {
     margin-bottom: 20px;
 }
 
-.login-container input {
+.login-container input, .create-account-container input, .forgot-password-container input {
     display: block;
     width: 100%;
     margin: 10px 0;
@@ -37,7 +38,7 @@ body {
     border: none;
 }
 
-.login-container button {
+.login-container button, .create-account-container button, .forgot-password-container button {
     padding: 10px 20px;
     background: #ff9900;
     border: none;
@@ -46,13 +47,13 @@ body {
     cursor: pointer;
 }
 
-.login-container .links {
+.login-container .links, .create-account-container .links, .forgot-password-container .links {
     display: flex;
     justify-content: space-between;
     margin-top: 20px;
 }
 
-.login-container .links a {
+.login-container .links a, .create-account-container .links a, .forgot-password-container .links a {
     color: #ff9900;
     text-decoration: none;
 }
