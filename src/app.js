@@ -1,30 +1,40 @@
 const express = require('express'); 
 const app = express(); 
-
 const bcryptjs = require('bcryptjs');
 
 app.use(express.static('public'));
-
-const isLoggedIn = require('./middleware/isLoggedin')
+const isLoggedIn = require('./middlewares/isLoggedin')
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-
 app.set('view engine', 'ejs');
 app.set('views', __dirname + '/views');
 
-// Connection Database 
-const mysql = require('mysql2');
-const db = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: '1234',
-    database: 'studyproject',
+// Import Sequelize models
+const sequelize = require('./config/database');
+const User = require('./models/user');
+const Folder = require('./models/folder');
+const Book = require('./models/book');
+const Slide = require('./models/slide');
+const LectureVideo = require('./models/lectureVideo');
+const LectureNotes = require('./models/lectureNotes');
+const PersonalNotes = require('./models/personalNotes');
 
-});
+//Controllers Import 
+const AuthenticationC = require('./controllers/Authentication');
+const FolderC = require('./controllers/FolderC');
 
-const session = require('express-session')
+
+//Routes Import
+const FolderRoutes = require('./routes/folderRoutes');
+const BookRoutes = require('./routes/bookRoutes');
+const lectureNotesRoutes = require('./routes/lectureNotesRoutes');  
+const lectureVideosRoutes = require('./routes/lectureVideosRoutes');
+const slidesRoutes = require('./routes/slidesRoutes');
+
+
+const session = require('express-session');
 app.use(session({   
     secret: 'secret',     
     resave: true,
@@ -33,88 +43,46 @@ app.use(session({
 
 app.use((req, res, next) => {
     res.locals.currentUser = req.session.Username;
-    console.log(req.session.Username)
     next();
-})
+});
 
 
-app.post('/register', (req, res) => {
-    const {Username,_id, Name, Email, Password} = req.body; 
-    bcryptjs.hash(Password, 10, (err, hash) => {
-        if (err) {
-            console.error('Error hashing password:', err);
-            return;
-        }
+// Authentication 
+app.post('/register', AuthenticationC.register);
+
+app.get("/login", AuthenticationC.renderLoginForm);
+
+app.post('/login', AuthenticationC.login);
+
+app.post('/logout', AuthenticationC.logout);
 
 
-        const q = 'Insert into user (Username, _id, Name, Email, Password) values (?,?,?,?,?)'
-        db.query(q, [Username, _id, Name, Email, hash], (err, result) => {
-            if (err) {
-                console.error('Error inserting user:', err);
-                return;
-            }
-            res.render('dashboard')
-            res.json({message: 'User inserted successfully'})
-        });
+// Testing isloggedIn
+app.get('/', isLoggedIn, async (req, res) => {
+    try {
+        const users = await User.findAll();
+        res.render('home', { result: users });
+    } catch (err) {
+        console.error('Error fetching users:', err);
+        res.status(500).json({ error: 'Error fetching users' });
+    }
+});
 
 
+app.use("/Folder",FolderRoutes);
 
 
-        
-    });
-})
+app.use("/Books", BookRoutes)
 
-app.get("/login", (req, res) => {
-    res.render('login')
-
-})
-
-app.post('/login',(req, res)=> {
-    const {Username, Password} = req.body; 
-    const q = 'Select * from user where Username = ?'
-    db.query(q, [Username], (err, result) => {
-        if (err) {
-            console.error('Error selecting user:', err);
-            return;
-        }
-        if (result.length === 0) {
-            res.json({message: 'Username not found'})
-            return;
-        }
-        const user = result[0];
-        bcryptjs.compare(Password, user.Password, (err, result) => {
-            if (err) {
-                console.error('Error comparing passwords:', err);
-                return;
-            }
-            if (result) {
-                req.session.Username = user.Username;
-                res.render('dashboard')
-                
-            } else {
-                res.json({message: 'Password incorrect'})
-            }
-        });
-    });
-})
-
-app.post('/logout', (req, res)=>{
-    req.session.destroy();
-    res.json({message: 'Logout successful'})
-
-})
+app.use("/lectureNotes", lectureNotesRoutes)
 
 
-app.get('/',isLoggedIn, (req, res) => {
-    const q = 'Select * from user' 
-    db.query(q, (err, result) => {
-    
-        res.render('home', {result})
-    })
-    
-})
+app.use("/lectureVideos", lectureVideosRoutes)
 
 
-app.listen(4000, ()=> {
-    console.log('Server is running on port 4000'); 
-})
+app.use("/slides", slidesRoutes)
+
+
+app.listen(4000, () => {
+    console.log('Server is running on port 4000');
+});

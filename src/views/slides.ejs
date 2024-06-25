@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Slides</title>
+</head>
+<body>
+    <section> 
+        <h3>Add Slides:</h3>
+        <form action="/slides/<%= folder_id %>" method="post">
+            <label for="title">
+                <input type="text" name="Title" id="title" placeholder="Title">
+            </label>
+            <br>
+            <label for="fileLink">
+                <input type="text" name="FileLink" id="fileLink" placeholder="file link">
+            </label>
+            <br>
+            Select Privacy:
+            <label>
+                <input type="radio" name="Privacy" value="private">
+                Private
+            </label>
+            <label>
+                <input type="radio" name="Privacy" value="public">
+                Public
+            </label>
+            <br>
+            <button>Add Slides</button>
+        </form>
+    
+    </section>
+
+</body>
+</html>
