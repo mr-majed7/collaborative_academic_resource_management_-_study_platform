@@ -33,7 +33,7 @@ const BookRoutes = require('./routes/bookRoutes');
 const lectureNotesRoutes = require('./routes/lectureNotesRoutes');
 const lectureVideosRoutes = require('./routes/lectureVideosRoutes');
 const slidesRoutes = require('./routes/slidesRoutes');
-
+const viewRouter = require('./routes/viewRouter');
 
 const session = require('express-session');
 app.use(session({
@@ -85,7 +85,7 @@ app.use("/lectureVideos", lectureVideosRoutes)
 
 app.use("/slides", slidesRoutes)
 
-
+app.use("/view", viewRouter)
 db.sequelize.sync().then(() => {
   app.listen(3000, () => {
     console.log('Server is running on port 3000');
