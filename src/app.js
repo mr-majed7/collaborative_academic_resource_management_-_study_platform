@@ -33,6 +33,8 @@ const lectureNotesRoutes = require('./routes/lectureNotesRoutes');
 const lectureVideosRoutes = require('./routes/lectureVideosRoutes');
 const slidesRoutes = require('./routes/slidesRoutes');
 
+//setup public route 
+
 
 const session = require('express-session');
 app.use(session({   
@@ -80,7 +82,12 @@ app.use("/lectureNotes", lectureNotesRoutes)
 app.use("/lectureVideos", lectureVideosRoutes)
 
 
-app.use("/slides", slidesRoutes)
+app.use("/slides", slidesRoutes)  
+
+app.get('/pomodoro', (req, res) => {
+    res.render('pomodoro');
+});
+
 
 
 app.listen(4000, () => {
