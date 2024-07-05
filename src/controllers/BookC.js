@@ -16,3 +16,10 @@ module.exports.createBook = async (req, res)=> {
     await Book.create({Folder_id:folder_id, Title, FileLink, Date: DateC, Progress, Privacy})
     res.json({message: 'Book inserted successfully'})
 }
+
+module.exports.reviseBook = async (req, res)=> {    
+    const {id} = req.params
+    
+    await Book.update({Progress:0}, {where: {_id:id}})
+    res.json({message: 'Book updated successfully'})
+}

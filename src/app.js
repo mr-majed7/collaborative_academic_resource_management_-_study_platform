@@ -24,6 +24,7 @@ const PersonalNotes = require('./models/personalNotes');
 //Controllers Import 
 const AuthenticationC = require('./controllers/Authentication');
 const FolderC = require('./controllers/FolderC');
+const RevisionC = require('./controllers/Revision');
 
 
 //Routes Import
@@ -84,9 +85,15 @@ app.use("/lectureVideos", lectureVideosRoutes)
 
 app.use("/slides", slidesRoutes)  
 
-app.get('/dashboard', (req, res) => {
-    res.render('dashboard');
-})   
+app.get('/dashboard/:Username', async(req, res) => {
+    const { Username } = req.params;
+    const booksRevision = await RevisionC.booksRevision(Username);
+    const notesRevision = await RevisionC.notesRevision(Username);
+    const videosRevision = await RevisionC.videosRevision(Username);
+    const slidesRevision = await RevisionC.slidesRevision(Username);
+  
+    res.render('dashboard', {Username, booksRevision, notesRevision, videosRevision, slidesRevision});
+}); 
 
 app.get('/pomodoro', (req, res) => {
     res.render('pomodoro');
@@ -104,30 +111,35 @@ app.get('/show_folder/:Username', async(req, res) => {
    
 });
 
+
 app.get('/materials/:folder_id', async(req, res) =>{
     const { folder_id } = req.params;
-    console.log(folder_id)
+   
     
     const books = await Book.findAll({ where: { folder_id } });
     const bookDetails = books.map(book => ({
+        bookId: book.dataValues._id,
         title: book.dataValues.Title,
         link: book.dataValues.FileLink,
         privacy: book.dataValues.Privacy
     }));
     const lectureNotes = await LectureNotes.findAll({ where: { folder_id } });
     const lectureNotesDetails = lectureNotes.map(lectureNote => ({
+        lectureNoteId: lectureNote.dataValues._id,
         title: lectureNote.dataValues.Title,
         link: lectureNote.dataValues.FileLink,
         privacy: lectureNote.dataValues.Privacy
     }));
     const lectureVideos = await LectureVideo.findAll({ where: { folder_id } });
     const lectureVideosDetails = lectureVideos.map(lectureVideo => ({
+        lectureVideoId: lectureVideo.dataValues._id,
         title: lectureVideo.dataValues.Title,
         link: lectureVideo.dataValues.FileLink,
         privacy: lectureVideo.dataValues.Privacy
     }));
     const slides = await Slide.findAll({ where: { folder_id } });
     const slidesDetails = slides.map(slide => ({
+        slideId: slide.dataValues._id,
         title: slide.dataValues.Title,
         link: slide.dataValues.FileLink,
         privacy: slide.dataValues.Privacy

@@ -40,7 +40,7 @@ module.exports.login = async (req, res) => {
         const isPasswordValid = await bcryptjs.compare(Password, user.Password);
         if (isPasswordValid) {
             req.session.Username = user.Username;
-            res.render('dashboard',{Username});
+            res.render('landingPage',{Username});
         } else {
             res.json({ message: 'Password incorrect' });
         }

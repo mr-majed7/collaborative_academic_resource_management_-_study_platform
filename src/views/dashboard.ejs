@@ -37,5 +37,32 @@
     <form action="/pomodoro">
         <button>Set pomodoro</button>
     </form>
+
+    <h3>Books for revision:</h3>
+    <% booksRevision.forEach(book => { %>
+        <li><%= book.Title %></li>
+    <% }); %>
+
+    <h3> Pending Revision Lecture Notes </h3>
+    <% notesRevision.forEach(note => { %>
+        <li><%= note.Title %></li>
+    <% }); %>
+
+    <h3>Pending Revision Lecture Videos</h3>
+    <% videosRevision.forEach(video => { %>
+        
+        <li><%= video.Title %></li>
+        Link: <Link><%= video.FileLink %></Link>
+    <% }); %>
+
+    <h3>Pending Revision Slides:</h3>
+    <% slidesRevision.forEach(slide => { %>
+        <li><%= slide.Title %></li>
+        Link: <Link><%= slide.FileLink %></Link>
+    <% }); %>
+
+
+    
+
 </body>
 </html>

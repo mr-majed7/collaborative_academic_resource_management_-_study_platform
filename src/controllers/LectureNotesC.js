@@ -15,3 +15,9 @@ module.exports.createLectureNotes = async (req, res)=> {
     await LectureNotes.create({Folder_id:folder_id, Title, FileLink, Date: DateC, Progress, Privacy})
     res.json({message: 'LectureNotes inserted successfully'})
 }
+
+module.exports.reviseLectureNotes = async (req, res)=> {
+    const {id} = req.params
+    await LectureNotes.update({Progress: 0}, {where: {_id:id}})
+    res.json({message: 'Lecture Notes updated successfully'})
+}
