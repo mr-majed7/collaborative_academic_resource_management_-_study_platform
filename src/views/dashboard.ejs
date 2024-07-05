@@ -6,6 +6,7 @@
     <title>User Dashboard</title>
 </head>
 <body>
+    <h2>Welcome <%= Username %></h2>
     <h4>Create Folder</h4>
     <form action="/Folder/<%= Username %>" method="post">
         <label for="title">
@@ -24,6 +25,10 @@
         </label>
         <br>
         <button>Add Folder</button>
+    </form>
+    <br>
+    <form action="/pomodoro">
+        <button>Set pomodoro</button>
     </form>
 </body>
 </html>
