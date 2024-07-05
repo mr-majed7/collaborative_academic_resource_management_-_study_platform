@@ -6,9 +6,11 @@
     <title>User Dashboard</title>
 </head>
 <body>
-    <h2>Welcome <%= Username %></h2>
+   
+    <h2>Welcome <%= currentUser %></h2>
+    
     <h4>Create Folder</h4>
-    <form action="/Folder/<%= Username %>" method="post">
+    <form action="/Folder/<%= currentUser %>" method="post">
         <label for="title">
             <input type="text" name="Title" id="title" placeholder="Folder Title">
         </label>
@@ -25,6 +27,11 @@
         </label>
         <br>
         <button>Add Folder</button>
+    </form>
+    <br>
+    <h4>Your Folders:</h4>
+    <form action="/show_folder/<%= currentUser %>">
+        <button>Folders</button>
     </form>
     <br>
     <form action="/pomodoro">

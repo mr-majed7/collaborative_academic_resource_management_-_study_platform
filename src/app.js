@@ -84,10 +84,57 @@ app.use("/lectureVideos", lectureVideosRoutes)
 
 app.use("/slides", slidesRoutes)  
 
+app.get('/dashboard', (req, res) => {
+    res.render('dashboard');
+})   
+
 app.get('/pomodoro', (req, res) => {
     res.render('pomodoro');
 });
 
+app.get('/show_folder/:Username', async(req, res) => { 
+    const { Username } = req.params; 
+    const folderInf = await Folder.findAll({ where: { Username } });
+    const folderDetails = folderInf.map(folder => ({
+        folder_id: folder.dataValues.folder_id,
+        Title: folder.dataValues.Title
+    }));
+    res.render('show_folders', { folderDetails, Username });
+    
+   
+});
+
+app.get('/materials/:folder_id', async(req, res) =>{
+    const { folder_id } = req.params;
+    console.log(folder_id)
+    
+    const books = await Book.findAll({ where: { folder_id } });
+    const bookDetails = books.map(book => ({
+        title: book.dataValues.Title,
+        link: book.dataValues.FileLink,
+        privacy: book.dataValues.Privacy
+    }));
+    const lectureNotes = await LectureNotes.findAll({ where: { folder_id } });
+    const lectureNotesDetails = lectureNotes.map(lectureNote => ({
+        title: lectureNote.dataValues.Title,
+        link: lectureNote.dataValues.FileLink,
+        privacy: lectureNote.dataValues.Privacy
+    }));
+    const lectureVideos = await LectureVideo.findAll({ where: { folder_id } });
+    const lectureVideosDetails = lectureVideos.map(lectureVideo => ({
+        title: lectureVideo.dataValues.Title,
+        link: lectureVideo.dataValues.FileLink,
+        privacy: lectureVideo.dataValues.Privacy
+    }));
+    const slides = await Slide.findAll({ where: { folder_id } });
+    const slidesDetails = slides.map(slide => ({
+        title: slide.dataValues.Title,
+        link: slide.dataValues.FileLink,
+        privacy: slide.dataValues.Privacy
+    }));
+    res.render('Show_materials', {folder_id, bookDetails, lectureNotesDetails, lectureVideosDetails, slidesDetails });
+
+} )
 
 
 app.listen(4000, () => {
