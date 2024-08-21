@@ -33,6 +33,9 @@ const LectureNotes = sequelize.define('LectureNotes', {
 }, {
   tableName: 'LectureNotes',
   timestamps: false
+}, {
+  tableName: 'Users',
+  timestamps: false
 });
 
 Folder.hasMany(LectureNotes, { foreignKey: 'Folder_id' });

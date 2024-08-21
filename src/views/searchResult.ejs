@@ -11,9 +11,7 @@
     <h1 class="my-4">Search Results</h1>
 
    
-    <% if (typeof query !== 'undefined' && query.trim().length > 0) { %>
-        <p>Search query: "<%= query %>"</p>
-    <% } %>
+   
 
     
     <% if (searchResults && searchResults.length > 0) { %>
@@ -22,6 +20,7 @@
                 <li class="list-group-item my-2">
                     <h5><%= result.Title %></h5>
                     <p>Type: <%= result.constructor.name %></p>
+                    <p>Created by: <%= result.Folder.User.dataValues.Name %></p
                     
                     <% if (result.FileLink) { %>
                         <p>File Link: <a href="<%= result.FileLink %>" target="_blank">View File</a></p>

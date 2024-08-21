@@ -1,8 +1,26 @@
 Book = require('../models/book');
 LectureNotes = require('../models/lectureNotes');
 LectureVideo = require('../models/LectureVideo');  
+Folder = require('../models/folder');
 Slide = require('../models/slide'); 
 const {Op} = require('sequelize'); 
+
+const User = require('../models/user'); // Assuming you have a User model
+
+// // Example for Book Model
+// Book.belongsTo(User, { foreignKey: '_id' }); // Assuming the foreign key is User_id
+// User.hasMany(Book, { foreignKey: '_id' });
+
+// // Repeat similar associations for LectureNotes, LectureVideo, and Slide models
+// LectureNotes.belongsTo(User, { foreignKey: '_id' });
+// User.hasMany(LectureNotes, { foreignKey: '_id' });
+
+// LectureVideo.belongsTo(User, { foreignKey: '_id' });
+// User.hasMany(LectureVideo, { foreignKey: '_id' });
+
+// Slide.belongsTo(User, { foreignKey: '_id' });
+// User.hasMany(Slide, { foreignKey: '_id' });
+
 
 
 
@@ -11,65 +29,50 @@ module.exports.srch = async(req, res)=> {
 
     const searchResults = [];
     try {
-        // Search based on the filter and check Privacy
+        const searchConditions = {
+            where: {
+                Title: {
+                    [Op.like]: `%${query}%`
+                },
+                Privacy: 'public'  // Only include public materials
+            },
+            include: [{
+                model: Folder,
+                include: [{
+                    model: User,
+                    attributes: ['Name']
+                }]
+            }]
+        };
+
+        // Search based on the filter
         if (filter === 'all' || filter === 'book') {
-            const books = await Book.findAll({
-                where: {
-                    Title: {
-                        [Op.like]: `%${query}%`
-                    },
-                    Privacy: 'public'  // Only include public books
-                }
-            });
+            const books = await Book.findAll(searchConditions);
             searchResults.push(...books);
         }
 
         if (filter === 'all' || filter === 'lectureNotes') {
-            const lectureNotes = await LectureNotes.findAll({
-                where: {
-                    Title: {
-                        [Op.like]: `%${query}%`
-                    },
-                    Privacy: 'public'  // Only include public lecture notes
-                }
-            });
+            const lectureNotes = await LectureNotes.findAll(searchConditions);
             searchResults.push(...lectureNotes);
         }
 
         if (filter === 'all' || filter === 'lectureVideo') {
-            const lectureVideos = await LectureVideo.findAll({
-                where: {
-                    Title: {
-                        [Op.like]: `%${query}%`
-                    },
-                    Privacy: 'public'  // Only include public lecture videos
-                }
-            });
+            const lectureVideos = await LectureVideo.findAll(searchConditions);
             searchResults.push(...lectureVideos);
         }
 
         if (filter === 'all' || filter === 'slides') {
-            const slides = await Slide.findAll({
-                where: {
-                    Title: {
-                        [Op.like]: `%${query}%`
-                    },
-                    Privacy: 'public'  // Only include public slides
-                }
-            });
+            const slides = await Slide.findAll(searchConditions);
             searchResults.push(...slides);
         }
 
         // Render the results to the search results page
-         res.render('searchResult', { searchResults });
-        
-        console.log(searchResults);
-    }
-    catch (error) {
-        console.log(error);
-        res.status(500).send('An error occurred while searching');
-    }
-    
+        res.render('searchResult', { searchResults });
+        // console.log(searchResults[0].Folder.User.dataValues.name);
+    } catch (error) {
+        console.error('Error during search:', error);
+        res.status(500).send('Internal Server Error');
+    }    
     
 
 };

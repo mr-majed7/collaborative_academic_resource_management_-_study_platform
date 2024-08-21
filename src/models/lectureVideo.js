@@ -33,6 +33,9 @@ const LectureVideo = sequelize.define('LectureVideo', {
 }, {
   tableName: 'LectureVideo',
   timestamps: false
+}, {
+  tableName: 'Users',
+  timestamps: false
 });
 
 Folder.hasMany(LectureVideo, { foreignKey: 'Folder_id' });

@@ -1,6 +1,7 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/database');
 const Folder = require('./folder');
+const User = require('./user');
 
 const Book = sequelize.define('Book', {
   _id: {
@@ -33,9 +34,13 @@ const Book = sequelize.define('Book', {
 }, {
   tableName: 'Books',
   timestamps: false
-});
+}
+);
+
+
 
 Folder.hasMany(Book, { foreignKey: 'Folder_id' });
 Book.belongsTo(Folder, { foreignKey: 'Folder_id' });
+
 
 module.exports = Book;
