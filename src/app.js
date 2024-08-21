@@ -19,12 +19,13 @@ const Book = require('./models/book');
 const Slide = require('./models/slide');
 const LectureVideo = require('./models/lectureVideo');
 const LectureNotes = require('./models/lectureNotes');
-const PersonalNotes = require('./models/personalNotes');
+const PersonalNotes = require("./models/personalNotes");
 
 //Controllers Import 
 const AuthenticationC = require('./controllers/Authentication');
 const FolderC = require('./controllers/FolderC');
 const RevisionC = require('./controllers/Revision');
+const searchC = require("./controllers/Search")
 
 
 //Routes Import
@@ -84,6 +85,9 @@ app.use("/lectureVideos", lectureVideosRoutes)
 
 
 app.use("/slides", slidesRoutes)  
+
+// Search 
+app.post("/search",searchC.srch)
 
 app.get('/dashboard/:Username', async(req, res) => {
     const { Username } = req.params;
