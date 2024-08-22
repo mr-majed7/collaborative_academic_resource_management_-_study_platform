@@ -35,17 +35,17 @@
     <h4>Create Folder</h4>
     <form action="/Folder/<%= currentUser %>" method="post">
         <label for="title">
-            <input type="text" name="Title" id="title" placeholder="Folder Title">
+            <input type="text" name="Title" id="title" placeholder="Folder Title" required>
         </label>
         <br>
         Select Privacy:
         <label>
-            <input type="radio" name="Privacy" value="private">
+            <input type="radio" name="Privacy" value="private" required >
             Private
         </label>
         
         <label>
-            <input type="radio" name="Privacy" value="public">
+            <input type="radio" name="Privacy" value="public" required>
             Public
         </label>
         <br>
@@ -61,34 +61,61 @@
         <button>Set pomodoro</button>
     </form>
     <% if(booksRevision.length) {%>
-        <h3>Books for revision:</h3>
-        <% booksRevision.forEach(book => { %>
-            <li><%= book.Title %></li>
-        <% }); %>
+            <h3>Books for revision:</h3>
+            <% booksRevision.forEach(book => { %>
+                <form action="/revision/done/<%= book._id %>?q=book"  method="post">
+
+                    <li ><%= book.Title %></li>
+                    <button>done</button>
+                </form>
+            <% }); %>
+          
+        
+
+        
     <% } %>
 
     <% if(notesRevision.length){ %>
+
         <h3> Pending Revision Lecture Notes </h3>
         <% notesRevision.forEach(note => { %>
-            <li><%= note.Title %></li>
+            <form action="/revision/done/<%= note._id %>?q=note" method="post">
+                <li><%= note.Title %></li>
+                <button>done</button>
+            </form>
         <% }); %>
+
     <% } %>
 
      
     <% if(videosRevision.length){ %>
+
         <h3>Pending Revision Lecture Videos</h3>
         <% videosRevision.forEach(video => { %>
+            <form action="/revision/done/<%= video._id %>?q=video" method="post">
+
             <li><%= video.Title %></li>
+            <button>done</button>
+            </form>
             Link: <a href="<%= video.FileLink %>"><%= video.FileLink %></a>
         <% }); %>
+        <button>done</button>
+        </form>
     <% } %>
-
+    
     <% if(slidesRevision.length){ %>
+
         <h3>Pending Revision Slides:</h3>
         <% slidesRevision.forEach(slide => { %>
+            <form action="/revision/done/<%= slide._id %>?q=slide" method="post">
+
             <li><%= slide.Title %></li>
+            <button>done</button>
+            </form>
             Link: <a href="<%= slide.FileLink %>"><%= slide.FileLink %></a>
         <% }); %>
+        <button>done</button>
+        </form>
     <% } %>
 
     <!-- Bootstrap JS Bundle with Popper -->

@@ -28,6 +28,7 @@ const RevisionC = require('./controllers/Revision');
 const searchC = require("./controllers/Search")
 
 
+
 //Routes Import
 const FolderRoutes = require('./routes/folderRoutes');
 const BookRoutes = require('./routes/bookRoutes');
@@ -88,6 +89,9 @@ app.use("/slides", slidesRoutes)
 
 // Search 
 app.post("/search",searchC.srch)
+
+// Revision Done 
+app.post("/revision/done/:id", RevisionC.revisionDone)
 
 app.get('/dashboard/:Username', async(req, res) => {
     const { Username } = req.params;
