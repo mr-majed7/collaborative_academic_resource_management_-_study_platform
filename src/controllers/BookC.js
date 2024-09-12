@@ -1,9 +1,4 @@
-const multer = require("multer");
-
-const db = require("../models");
-const Book = db.Book;
-
-const storage = multer.diskStorage({});
+const Book = require("../models/book");
 
 module.exports.renderBooks = async (req, res) => {
   const { folder_id } = req.params;
@@ -12,6 +7,7 @@ module.exports.renderBooks = async (req, res) => {
 
 module.exports.createBook = async (req, res) => {
   const { folder_id } = req.params;
+  console.log(folder_id);
   DateC = new Date();
   const { Title, FileLink, Progress, Privacy } = req.body;
   await Book.create({
@@ -23,4 +19,11 @@ module.exports.createBook = async (req, res) => {
     Privacy,
   });
   res.json({ message: "Book inserted successfully" });
+};
+
+module.exports.reviseBook = async (req, res) => {
+  const { id } = req.params;
+
+  await Book.update({ Progress: 0 }, { where: { _id: id } });
+  res.json({ message: "Book updated successfully" });
 };
