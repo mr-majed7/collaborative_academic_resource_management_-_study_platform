@@ -22,7 +22,7 @@ module.exports.register = async (req, res) => {
     const hash = await bcryptjs.hash(Password, 10);
     await User.create({ Username, Name, Email, Password: hash, Institution });
     req.session.currentUser = Username;
-    res.render("dashboard", { Username });
+    res.json({ message: "User inserted successfully" });
   } catch (err) {
     console.error("Error inserting user:", err);
     res.status(500).json({ error: "Error inserting user" });
@@ -45,7 +45,7 @@ module.exports.login = async (req, res) => {
     const isPasswordValid = await bcryptjs.compare(Password, user.Password);
     if (isPasswordValid) {
       req.session.Username = user.Username;
-      res.render("landingPage", { Username });
+      res.json({ message: "Login successful" });
     } else {
       res.json({ message: "Password incorrect" });
     }

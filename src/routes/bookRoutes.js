@@ -12,4 +12,6 @@ router.post("/:folder_id", bookController.createBook);
 
 router.put("/:folder_id/:book_id", bookController.updateBook);
 
+router.delete("/:folder_id/:book_id", bookController.deleteBook);
+
 module.exports = router;
