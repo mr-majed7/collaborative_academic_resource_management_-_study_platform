@@ -37,6 +37,7 @@ module.exports.login = async (req, res) => {
   const { Username, Password } = req.body;
   try {
     const user = await User.findOne({ where: { Username } });
+
     if (!user) {
       res.json({ message: "Username not found" });
       return;
@@ -44,7 +45,7 @@ module.exports.login = async (req, res) => {
     const isPasswordValid = await bcryptjs.compare(Password, user.Password);
     if (isPasswordValid) {
       req.session.Username = user.Username;
-      res.render("dashboard", { Username });
+      res.render("landingPage", { Username });
     } else {
       res.json({ message: "Password incorrect" });
     }

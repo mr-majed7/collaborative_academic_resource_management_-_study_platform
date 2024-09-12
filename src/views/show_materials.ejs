@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Materials</title>
+</head>
+<body>
+    <% if(bookDetails.length) {%>
+        <h3>Your Books:</h3>
+    <ul>
+        
+        <% bookDetails.forEach(book => { %>
+            <li>
+               Title:<%= book.title %>
+               <br>
+               Link:<%= book.link  %> <br>
+               Privacy:<%= book.privacy %>
+            </li>
+            <form action="/Books/revise/<%= book.bookId %>" method="POST">
+                <button>Revise Later</button>
+            </form>
+        <% }); %>
+    </ul>
+    <% } %>
+
+    <% if(lectureVideosDetails.length) {%>
+        <h3>Your Videos:</h3>
+    <ul>
+            
+            <% lectureVideosDetails.forEach(video => { %>
+                <li>
+                Title:<%= video.title %>
+                <br>
+                Link:<%= video.link  %> <br>
+                Privacy:<%= video.privacy %>
+                </li>
+                <form action="/lectureVideos/revise/<%= video.lectureVideoId %>" method="post">
+                    <button>Revise Later</button>
+                </form>
+
+            <% }); %>
+    </ul>
+    <% } %>
+
+    <% if(lectureNotesDetails.length) {%>
+        <h3>Your Notes:</h3>
+    <ul>
+            
+            <% lectureNotesDetails.forEach(note => { %>
+                <li>
+                Title:<%= note.title %>
+                <br>
+                Link:<%= note.link  %> <br>
+                Privacy:<%= note.privacy %>
+                </li>
+                <form action="/lectureNotes/revise/<%= note.lectureNoteId %>" method="post">
+                    <button>Revise Later</button>
+                </form>
+            <% }); %>
+    </ul>
+    <% } %>
+    <% if(slidesDetails.length){ %>
+        <h3>Your Slides:</h3>
+    <ul>
+            
+            <% slidesDetails.forEach(slide => { %>
+                <li>
+                Title:<%= slide.title %>
+                <br>
+                Link:<%= slide.link  %> <br>
+                Privacy:<%= slide.privacy %>
+                </li>
+                <form action="/slides/revise/<%= slide.slideId %>" method="post">
+                    <button>Revise Later</button>
+                </form>
+            <% }); %>
+
+    <% } %>
+    <br>
+    <form action="/dashboard">
+        <button>Back</button>
+    </form>
+
+    <section>
+        <h3>Add Books</h3>
+        <form action="/Books/<%= folder_id %>" >
+
+            <button>+Book</button>
+        </form>
+    </section>
+
+    <section> 
+        <h3>Add Lecture Notes :</h3>
+        <form action="/lectureNotes/<%=folder_id%>" >
+            <button>+Lecture Notes</button>
+        </form>
+    
+    </section>
+    <section> 
+        <h3>Add Lecture Videos:</h3>
+        <form action="/lectureVideos/<%= folder_id %>">
+
+            <button> +LectureVideo</button>
+        </form>
+    
+    </section>
+
+    <section> 
+        <h3>Add Slides:</h3>
+        <form action="/slides/<%= folder_id %>">
+
+            <button>+Slides</button>
+        </form>
+        
+    
+    </section>
+
+
+</body>
+</html>

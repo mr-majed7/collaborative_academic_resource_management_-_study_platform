@@ -5,6 +5,7 @@ const router = express.Router([ mergeParams= true ]);
 //controller import
 const lectureNotesController = require('../controllers/LectureNotesC')
 
+router.post("/revise/:id", lectureNotesController.reviseLectureNotes);
 
 router.get("/:folder_id", lectureNotesController.renderLectureNotes);
 

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= Username%>'s Materials</title>
+</head>
+<body>
+   <% if(folderDetails.length){ %>
+  <h3>Your Folders:</h3> 
+  <ul>
+    <% folderDetails.forEach((folder) => { %>
+      <li>
+        
+        <a href="/materials/<%= folder.folder_id  %>"><%= folder.Title %></a>
+          
+        
+      </li>
+    <% }); %>
+
+    <% }else{ %>
+      <h3>No Folders Yet</h3>
+    <% } %>
+
+
+</body>
+</html>

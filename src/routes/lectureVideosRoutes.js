@@ -6,6 +6,8 @@ const router = express.Router([ mergeParams= true ]);
 const lectureVideosController = require('../controllers/lectureVideosC')
 
 
+router.post("/revise/:id", lectureVideosController.reviseLectureVideos);
+
 router.get("/:folder_id", lectureVideosController.renderLectureVideos);
 
 router.post("/:folder_id", lectureVideosController.createLectureVideos);

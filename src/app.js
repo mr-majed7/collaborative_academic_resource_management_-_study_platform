@@ -12,19 +12,20 @@ app.set("view engine", "ejs");
 app.set("views", __dirname + "/views");
 
 // Import Sequelize models
-const { sequelize } = require("./models");
-const db = require("./models");
-const User = require("./models/User");
-const Folder = require("./models/Folder");
-const Book = require("./models/Book");
-const Slide = require("./models/Slides");
-const LectureVideo = require("./models/LectureVideos");
-const LectureNotes = require("./models/LectureNotes");
-const PersonalNotes = require("./models/PersonalNotes");
+const sequelize = require("./config/database");
+const User = require("./models/user");
+const Folder = require("./models/folder");
+const Book = require("./models/book");
+const Slide = require("./models/slide");
+const LectureVideo = require("./models/lectureVideo");
+const LectureNotes = require("./models/lectureNotes");
+const PersonalNotes = require("./models/personalNotes");
 
 //Controllers Import
 const AuthenticationC = require("./controllers/Authentication");
 const FolderC = require("./controllers/FolderC");
+const RevisionC = require("./controllers/Revision");
+const searchC = require("./controllers/Search");
 
 //Routes Import
 const FolderRoutes = require("./routes/folderRoutes");
@@ -32,7 +33,8 @@ const BookRoutes = require("./routes/bookRoutes");
 const lectureNotesRoutes = require("./routes/lectureNotesRoutes");
 const lectureVideosRoutes = require("./routes/lectureVideosRoutes");
 const slidesRoutes = require("./routes/slidesRoutes");
-const viewRouter = require("./routes/viewRouter");
+
+//setup public route
 
 const session = require("express-session");
 app.use(
@@ -80,9 +82,82 @@ app.use("/lectureVideos", lectureVideosRoutes);
 
 app.use("/slides", slidesRoutes);
 
-app.use("/view", viewRouter);
-db.sequelize.sync().then(() => {
-  app.listen(3000, () => {
-    console.log("Server is running on port 3000");
+// Search
+app.post("/search", searchC.srch);
+
+// Revision Done
+app.post("/revision/done/:id", RevisionC.revisionDone);
+
+app.get("/dashboard/:Username", async (req, res) => {
+  const { Username } = req.params;
+  const booksRevision = await RevisionC.booksRevision(Username);
+  const notesRevision = await RevisionC.notesRevision(Username);
+  const videosRevision = await RevisionC.videosRevision(Username);
+  const slidesRevision = await RevisionC.slidesRevision(Username);
+
+  res.render("dashboard", {
+    Username,
+    booksRevision,
+    notesRevision,
+    videosRevision,
+    slidesRevision,
   });
+});
+
+app.get("/pomodoro", (req, res) => {
+  res.render("pomodoro");
+});
+
+app.get("/show_folder/:Username", async (req, res) => {
+  const { Username } = req.params;
+  const folderInf = await Folder.findAll({ where: { Username } });
+  const folderDetails = folderInf.map((folder) => ({
+    folder_id: folder.dataValues.folder_id,
+    Title: folder.dataValues.Title,
+  }));
+  res.render("show_folders", { folderDetails, Username });
+});
+
+app.get("/materials/:folder_id", async (req, res) => {
+  const { folder_id } = req.params;
+
+  const books = await Book.findAll({ where: { folder_id } });
+  const bookDetails = books.map((book) => ({
+    bookId: book.dataValues._id,
+    title: book.dataValues.Title,
+    link: book.dataValues.FileLink,
+    privacy: book.dataValues.Privacy,
+  }));
+  const lectureNotes = await LectureNotes.findAll({ where: { folder_id } });
+  const lectureNotesDetails = lectureNotes.map((lectureNote) => ({
+    lectureNoteId: lectureNote.dataValues._id,
+    title: lectureNote.dataValues.Title,
+    link: lectureNote.dataValues.FileLink,
+    privacy: lectureNote.dataValues.Privacy,
+  }));
+  const lectureVideos = await LectureVideo.findAll({ where: { folder_id } });
+  const lectureVideosDetails = lectureVideos.map((lectureVideo) => ({
+    lectureVideoId: lectureVideo.dataValues._id,
+    title: lectureVideo.dataValues.Title,
+    link: lectureVideo.dataValues.FileLink,
+    privacy: lectureVideo.dataValues.Privacy,
+  }));
+  const slides = await Slide.findAll({ where: { folder_id } });
+  const slidesDetails = slides.map((slide) => ({
+    slideId: slide.dataValues._id,
+    title: slide.dataValues.Title,
+    link: slide.dataValues.FileLink,
+    privacy: slide.dataValues.Privacy,
+  }));
+  res.render("Show_materials", {
+    folder_id,
+    bookDetails,
+    lectureNotesDetails,
+    lectureVideosDetails,
+    slidesDetails,
+  });
+});
+
+app.listen(4000, () => {
+  console.log("Server is running on port 4000");
 });
