@@ -1,5 +1,5 @@
 const db = require("../models");
-const LectureVideo = db.lectureVideos;
+const LectureVideo = db.LectureVideo;
 
 module.exports.renderLectureVideos = async (req, res) => {
   const { folder_id } = req.params;
@@ -32,13 +32,13 @@ module.exports.updateLectureVideos = async (req, res) => {
   const { Title, FileLink, Progress, Privacy } = req.body;
   await LectureVideo.update(
     { Title, FileLink, Progress, Privacy },
-    { where: { id: video_id } }
+    { where: { _id: video_id } }
   );
   res.json({ message: "Lecture Videos updated successfully" });
 };
 
 module.exports.deleteLectureVideos = async (req, res) => {
   const { folder_id, video_id } = req.params;
-  await LectureVideo.destroy({ where: { id: video_id } });
+  await LectureVideo.destroy({ where: { _id: video_id } });
   res.json({ message: "Lecture Videos deleted successfully" });
 };

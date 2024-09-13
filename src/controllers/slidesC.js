@@ -1,5 +1,5 @@
 const db = require("../models");
-const Slide = db.slides;
+const Slide = db.Slide;
 
 module.exports.renderSlide = async (req, res) => {
   const { folder_id } = req.params;
@@ -32,13 +32,13 @@ module.exports.updateSlide = async (req, res) => {
   const { Title, FileLink, Progress, Privacy } = req.body;
   await Slide.update(
     { Title, FileLink, Progress, Privacy },
-    { where: { id: slide_id } }
+    { where: { _id: slide_id } }
   );
   res.json({ message: "Slide updated successfully" });
 };
 
 module.exports.deleteSlide = async (req, res) => {
   const { folder_id, slide_id } = req.params;
-  await Slide.destroy({ where: { id: slide_id } });
+  await Slide.destroy({ where: { _id: slide_id } });
   res.json({ message: "Slide deleted successfully" });
 };

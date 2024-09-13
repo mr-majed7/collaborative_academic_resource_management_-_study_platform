@@ -32,13 +32,13 @@ module.exports.updateLectureNotes = async (req, res) => {
   const { Title, FileLink, Progress, Privacy } = req.body;
   await LectureNotes.update(
     { Title, FileLink, Progress, Privacy },
-    { where: { id } }
+    { where: { _id: id } }
   );
   res.json({ message: "LectureNotes updated successfully" });
 };
 
 module.exports.deleteLectureNotes = async (req, res) => {
   const { folder_id, id } = req.params;
-  await LectureNotes.destroy({ where: { id } });
+  await LectureNotes.destroy({ where: { _id: id } });
   res.json({ message: "LectureNotes deleted successfully" });
 };
