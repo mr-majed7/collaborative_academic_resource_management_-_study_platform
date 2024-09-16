@@ -3,119 +3,152 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <title>Materials</title>
 </head>
 <body>
-    <% if(bookDetails.length) {%>
-        <h3>Your Books:</h3>
-    <ul>
-        
-        <% bookDetails.forEach(book => { %>
-            <li>
-               Title:<%= book.title %>
-               <br>
-               Link:<%= book.link  %> <br>
-               Privacy:<%= book.privacy %>
-            </li>
-            <form action="/Books/revise/<%= book.bookId %>" method="POST">
-                <button>Revise Later</button>
+    <!-- Navbar with Search in Center and Links on Right -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">CARMS</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+                <!-- Centered Search and Filter Form -->
+                <form class="d-flex" action="/search" method="post">
+                    <input class="form-control me-2" type="search" placeholder="Search Materials" aria-label="Search" name="query">
+                    <select class="form-select me-2" name="filter">
+                        <option value="all" selected>All</option>
+                        <option value="book">Books</option>
+                        <option value="lectureNotes">Lecture Notes</option>
+                        <option value="slides">Slides</option>
+                        <option value="lectureVideo">Lecture Videos</option>
+                    </select>
+                    <button class="btn btn-light" type="submit">Search</button>
+                </form>
+                <!-- Links on the Right -->
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/dashboard/<%= currentUser %>">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/logout">Logout</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main content with lists and forms -->
+    <div class="container mt-5 pt-5">
+        <% if(bookDetails.length) {%>
+            <h3 class="mb-4">Your Books:</h3>
+            <ul class="list-group mb-4">
+                <% bookDetails.forEach(book => { %>
+                    <li class="list-group-item">
+                        <strong>Title:</strong> <%= book.title %><br>
+                        <strong>Link:</strong> <%= book.link %><br>
+                        <strong>Privacy:</strong> <%= book.privacy %>
+                        <form action="/Books/revise/<%= book.bookId %>" method="POST" class="mt-2">
+                            <button type="submit" class="btn btn-warning btn-sm">Revise Later</button>
+                        </form>
+                    </li>
+                <% }); %>
+            </ul>
+        <% } %>
+
+        <% if(lectureVideosDetails.length) {%>
+            <h3 class="mb-4">Your Videos:</h3>
+            <ul class="list-group mb-4">
+                <% lectureVideosDetails.forEach(video => { %>
+                    <li class="list-group-item">
+                        <strong>Title:</strong> <%= video.title %><br>
+                        <strong>Link:</strong> <%= video.link %><br>
+                        <strong>Privacy:</strong> <%= video.privacy %>
+                        <form action="/lectureVideos/revise/<%= video.lectureVideoId %>" method="post" class="mt-2">
+                            <button type="submit" class="btn btn-warning btn-sm">Revise Later</button>
+                        </form>
+                    </li>
+                <% }); %>
+            </ul>
+        <% } %>
+
+        <% if(lectureNotesDetails.length) {%>
+            <h3 class="mb-4">Your Notes:</h3>
+            <ul class="list-group mb-4">
+                <% lectureNotesDetails.forEach(note => { %>
+                    <li class="list-group-item">
+                        <strong>Title:</strong> <%= note.title %><br>
+                        <strong>Link:</strong> <%= note.link %><br>
+                        <strong>Privacy:</strong> <%= note.privacy %>
+                        <form action="/lectureNotes/revise/<%= note.lectureNoteId %>" method="post" class="mt-2">
+                            <button type="submit" class="btn btn-warning btn-sm">Revise Later</button>
+                        </form>
+                    </li>
+                <% }); %>
+            </ul>
+        <% } %>
+
+        <% if(slidesDetails.length) {%>
+            <h3 class="mb-4">Your Slides:</h3>
+            <ul class="list-group mb-4">
+                <% slidesDetails.forEach(slide => { %>
+                    <li class="list-group-item">
+                        <strong>Title:</strong> <%= slide.title %><br>
+                        <strong>Link:</strong> <%= slide.link %><br>
+                        <strong>Privacy:</strong> <%= slide.privacy %>
+                        <form action="/slides/revise/<%= slide.slideId %>" method="post" class="mt-2">
+                            <button type="submit" class="btn btn-warning btn-sm">Revise Later</button>
+                        </form>
+                    </li>
+                <% }); %>
+            </ul>
+        <% } %>
+
+        <!-- Add Materials Section in a Row -->
+        <div class="row mb-4">
+            <div class="col-md-3 mb-3">
+                <section>
+                    <h4>Add Books</h4>
+                    <form action="/Books/<%= folder_id %>" >
+                        <button type="submit" class="btn btn-success w-100">+ Book</button>
+                    </form>
+                </section>
+            </div>
+            <div class="col-md-3 mb-3">
+                <section>
+                    <h4>Add Lecture Notes</h4>
+                    <form action="/lectureNotes/<%= folder_id %>">
+                        <button type="submit" class="btn btn-success w-100">+ Lecture Notes</button>
+                    </form>
+                </section>
+            </div>
+            <div class="col-md-3 mb-3">
+                <section>
+                    <h4>Add Lecture Videos</h4>
+                    <form action="/lectureVideos/<%= folder_id %>">
+                        <button type="submit" class="btn btn-success w-100">+ Lecture Video</button>
+                    </form>
+                </section>
+            </div>
+            <div class="col-md-3 mb-3">
+                <section>
+                    <h4>Add Slides</h4>
+                    <form action="/slides/<%= folder_id %>">
+                        <button type="submit" class="btn btn-success w-100">+ Slides</button>
+                    </form>
+                </section>
+            </div>
+        </div>
+
+        <section class="mb-4">
+            <form action="/dashboard/<%= currentUser %>">
+                <button type="submit" class="btn btn-secondary">Dashboard</button>
             </form>
-        <% }); %>
-    </ul>
-    <% } %>
+        </section>
+    </div>
 
-    <% if(lectureVideosDetails.length) {%>
-        <h3>Your Videos:</h3>
-    <ul>
-            
-            <% lectureVideosDetails.forEach(video => { %>
-                <li>
-                Title:<%= video.title %>
-                <br>
-                Link:<%= video.link  %> <br>
-                Privacy:<%= video.privacy %>
-                </li>
-                <form action="/lectureVideos/revise/<%= video.lectureVideoId %>" method="post">
-                    <button>Revise Later</button>
-                </form>
-
-            <% }); %>
-    </ul>
-    <% } %>
-
-    <% if(lectureNotesDetails.length) {%>
-        <h3>Your Notes:</h3>
-    <ul>
-            
-            <% lectureNotesDetails.forEach(note => { %>
-                <li>
-                Title:<%= note.title %>
-                <br>
-                Link:<%= note.link  %> <br>
-                Privacy:<%= note.privacy %>
-                </li>
-                <form action="/lectureNotes/revise/<%= note.lectureNoteId %>" method="post">
-                    <button>Revise Later</button>
-                </form>
-            <% }); %>
-    </ul>
-    <% } %>
-    <% if(slidesDetails.length){ %>
-        <h3>Your Slides:</h3>
-    <ul>
-            
-            <% slidesDetails.forEach(slide => { %>
-                <li>
-                Title:<%= slide.title %>
-                <br>
-                Link:<%= slide.link  %> <br>
-                Privacy:<%= slide.privacy %>
-                </li>
-                <form action="/slides/revise/<%= slide.slideId %>" method="post">
-                    <button>Revise Later</button>
-                </form>
-            <% }); %>
-
-    <% } %>
-    <br>
-    <form action="/dashboard">
-        <button>Back</button>
-    </form>
-
-    <section>
-        <h3>Add Books</h3>
-        <form action="/Books/<%= folder_id %>" >
-
-            <button>+Book</button>
-        </form>
-    </section>
-
-    <section> 
-        <h3>Add Lecture Notes :</h3>
-        <form action="/lectureNotes/<%=folder_id%>" >
-            <button>+Lecture Notes</button>
-        </form>
-    
-    </section>
-    <section> 
-        <h3>Add Lecture Videos:</h3>
-        <form action="/lectureVideos/<%= folder_id %>">
-
-            <button> +LectureVideo</button>
-        </form>
-    
-    </section>
-
-    <section> 
-        <h3>Add Slides:</h3>
-        <form action="/slides/<%= folder_id %>">
-
-            <button>+Slides</button>
-        </form>
-        
-    
-    </section>
-
-
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

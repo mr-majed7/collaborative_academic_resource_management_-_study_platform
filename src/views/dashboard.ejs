@@ -6,16 +6,46 @@
     <title>User Dashboard</title>
     <!-- Bootstrap CSS CDN -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            padding-top: 20px;
+            background-color: #f8f9fa;
+        }
+        .card-header {
+            background-color: #007bff;
+            color: white;
+        }
+        .btn-primary, .btn-primary:hover {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+        .btn-success, .btn-success:hover {
+            background-color: #28a745;
+            border-color: #28a745;
+        }
+        .btn-info, .btn-info:hover {
+            background-color: #17a2b8;
+            border-color: #17a2b8;
+        }
+        .btn-secondary, .btn-secondary:hover {
+            background-color: #6c757d;
+            border-color: #6c757d;
+        }
+        .form-label {
+            font-weight: bold;
+        }
+        .list-group-item {
+            border: none;
+        }
+    </style>
 </head>
 <body class="container">
-   
-    <!-- Bootstrap Search Bar -->
-    <nav class="navbar navbar-light bg-light">
-        <div class="container d-flex justify-content-center">
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-light bg-light mb-4 shadow-sm">
+        <div class="container">
             <form class="d-flex" action="/search" method="post">
                 <input class="form-control me-2" type="search" placeholder="Search Materials" aria-label="Search" name="query">
-                
-                <!-- Filter Dropdown -->
                 <select class="form-select me-2" name="filter">
                     <option value="all" selected>All</option>
                     <option value="book">Books</option>
@@ -23,99 +53,126 @@
                     <option value="slides">Slides</option>
                     <option value="lectureVideo">Lecture Videos</option>
                 </select>
-                
-                <button class="btn btn-outline-success" type="submit">Search</button>
+                <button class="btn btn-primary" type="submit">Search</button>
             </form>
         </div>
     </nav>
-    
 
-    <h2>Welcome <%= currentUser %></h2>
-    
-    <h4>Create Folder</h4>
-    <form action="/Folder/<%= currentUser %>" method="post">
-        <label for="title">
-            <input type="text" name="Title" id="title" placeholder="Folder Title" required>
-        </label>
-        <br>
-        Select Privacy:
-        <label>
-            <input type="radio" name="Privacy" value="private" required >
-            Private
-        </label>
-        
-        <label>
-            <input type="radio" name="Privacy" value="public" required>
-            Public
-        </label>
-        <br>
-        <button>Add Folder</button>
-    </form>
-    <br>
-    <h4>Your Folders:</h4>
-    <form action="/show_folder/<%= currentUser %>">
-        <button>Folders</button>
-    </form>
-    <br>
-    <form action="/pomodoro">
-        <button>Set pomodoro</button>
-    </form>
-    <% if(booksRevision.length) {%>
-            <h3>Books for revision:</h3>
-            <% booksRevision.forEach(book => { %>
-                <form action="/revision/done/<%= book._id %>?q=book"  method="post">
+    <!-- Welcome and Folder Creation -->
+    <div class="card mb-4 shadow-sm">
+        <div class="card-header">
+            <h2 class="mb-0">Welcome <%= currentUser %></h2>
+        </div>
+        <div class="card-body">
+            <h4>Create Folder</h4>
+            <form action="/Folder/<%= currentUser %>" method="post">
+                <div class="mb-3">
+                    <input type="text" name="Title" id="title" class="form-control" placeholder="Folder Title" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Select Privacy:</label><br>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="Privacy" value="private" required>
+                        <label class="form-check-label">Private</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="Privacy" value="public" required>
+                        <label class="form-check-label">Public</label>
+                    </div>
+                </div>
+                <button class="btn btn-primary" type="submit">Add Folder</button>
+            </form>
+        </div>
+    </div>
 
-                    <li ><%= book.Title %></li>
-                    <button>done</button>
-                </form>
-            <% }); %>
-          
-        
+    <!-- Folder Actions -->
+    <div class="mb-4">
+        <div class="d-flex gap-2">
+            <form action="/show_folder/<%= currentUser %>">
+                <button class="btn btn-secondary">Your Folders</button>
+            </form>
+            <form action="/pomodoro">
+                <button class="btn btn-secondary">Set Pomodoro</button>
+            </form>
+        </div>
+    </div>
 
-        
+    <!-- Books Revision -->
+    <% if(booksRevision.length) { %>
+        <div class="card mb-4 shadow-sm">
+            <div class="card-header">
+                <h3 class="mb-0">Books for Revision:</h3>
+            </div>
+            <ul class="list-group list-group-flush">
+                <% booksRevision.forEach(book => { %>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <%= book.Title %>
+                        <form action="/revision/done/<%= book._id %>?q=book" method="post">
+                            <button class="btn btn-success btn-sm">Done</button>
+                        </form>
+                    </li>
+                <% }); %>
+            </ul>
+        </div>
     <% } %>
 
-    <% if(notesRevision.length){ %>
-
-        <h3> Pending Revision Lecture Notes </h3>
-        <% notesRevision.forEach(note => { %>
-            <form action="/revision/done/<%= note._id %>?q=note" method="post">
-                <li><%= note.Title %></li>
-                <button>done</button>
-            </form>
-        <% }); %>
-
+    <!-- Notes Revision -->
+    <% if(notesRevision.length) { %>
+        <div class="card mb-4 shadow-sm">
+            <div class="card-header">
+                <h3 class="mb-0">Pending Revision Lecture Notes</h3>
+            </div>
+            <ul class="list-group list-group-flush">
+                <% notesRevision.forEach(note => { %>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <%= note.Title %>
+                        <form action="/revision/done/<%= note._id %>?q=note" method="post">
+                            <button class="btn btn-success btn-sm">Done</button>
+                        </form>
+                    </li>
+                <% }); %>
+            </ul>
+        </div>
     <% } %>
 
-     
-    <% if(videosRevision.length){ %>
-
-        <h3>Pending Revision Lecture Videos</h3>
-        <% videosRevision.forEach(video => { %>
-            <form action="/revision/done/<%= video._id %>?q=video" method="post">
-
-            <li><%= video.Title %></li>
-            <button>done</button>
-            </form>
-            Link: <a href="<%= video.FileLink %>"><%= video.FileLink %></a>
-        <% }); %>
-        <button>done</button>
-        </form>
+    <!-- Videos Revision -->
+    <% if(videosRevision.length) { %>
+        <div class="card mb-4 shadow-sm">
+            <div class="card-header">
+                <h3 class="mb-0">Pending Revision Lecture Videos</h3>
+            </div>
+            <ul class="list-group list-group-flush">
+                <% videosRevision.forEach(video => { %>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <%= video.Title %>
+                        <a href="<%= video.FileLink %>" class="btn btn-info btn-sm" target="_blank">View Link</a>
+                        <form action="/revision/done/<%= video._id %>?q=video" method="post">
+                            <button class="btn btn-success btn-sm">Done</button>
+                        </form>
+                    </li>
+                <% }); %>
+            </ul>
+        </div>
     <% } %>
-    
-    <% if(slidesRevision.length){ %>
 
-        <h3>Pending Revision Slides:</h3>
-        <% slidesRevision.forEach(slide => { %>
-            <form action="/revision/done/<%= slide._id %>?q=slide" method="post">
-
-            <li><%= slide.Title %></li>
-            <button>done</button>
-            </form>
-            Link: <a href="<%= slide.FileLink %>"><%= slide.FileLink %></a>
-        <% }); %>
-        <button>done</button>
-        </form>
+    <!-- Slides Revision -->
+    <% if(slidesRevision.length) { %>
+        <div class="card mb-4 shadow-sm">
+            <div class="card-header">
+                <h3 class="mb-0">Pending Revision Slides:</h3>
+            </div>
+            <ul class="list-group list-group-flush">
+                <% slidesRevision.forEach(slide => { %>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <%= slide.Title %>
+                        <a href="<%= slide.FileLink %>" class="btn btn-info btn-sm" target="_blank">View Link</a>
+                        <form action="/revision/done/<%= slide._id %>?q=slide" method="post">
+                            <button class="btn btn-success btn-sm">Done</button>
+                        </form>
+                    </li>
+                <% }); %>
+            </ul>
+        </div>
     <% } %>
 
     <!-- Bootstrap JS Bundle with Popper -->

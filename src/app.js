@@ -53,25 +53,32 @@ app.use((req, res, next) => {
 
 
 // Authentication 
+
+app.get('/', async (req, res)=> {
+    res.render('homePage')
+})
+
+app.get('/register', AuthenticationC.getRegisterForm); 
+
 app.post('/register', AuthenticationC.register);
 
 app.get("/login", AuthenticationC.renderLoginForm);
 
 app.post('/login', AuthenticationC.login);
 
-app.post('/logout', AuthenticationC.logout);
+app.get('/logout', AuthenticationC.logout);
 
 
 // Testing isloggedIn
-app.get('/', isLoggedIn, async (req, res) => {
-    try {
-        const users = await User.findAll();
-        res.render('home', { result: users });
-    } catch (err) {
-        console.error('Error fetching users:', err);
-        res.status(500).json({ error: 'Error fetching users' });
-    }
-});
+// app.get('/', isLoggedIn, async (req, res) => {
+//     try {
+//         const users = await User.findAll();
+//         res.render('home', { result: users });
+//     } catch (err) {
+//         console.error('Error fetching users:', err);
+//         res.status(500).json({ error: 'Error fetching users' });
+//     }
+// });
 
 
 app.use("/Folder",FolderRoutes);

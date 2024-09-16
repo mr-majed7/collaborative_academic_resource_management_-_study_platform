@@ -9,13 +9,17 @@ app.use(session({
     saveUninitialized: true
 }));
 
+module.exports.getRegisterForm = async (req, res) => {
+    res.render("Registration")
+}
+
 module.exports.register =  async (req, res) => {
     const { Username, _id, Name, Email, Password } = req.body;
     try {
         const hash = await bcryptjs.hash(Password, 10);
         await User.create({ Username, _id, Name, Email, Password: hash });
         req.session.currentUser = Username
-        res.render('dashboard', {Username});
+        res.render('landingPage', {Username});
         
     } catch (err) {
         console.error('Error inserting user:', err);
@@ -52,5 +56,6 @@ module.exports.login = async (req, res) => {
 
 module.exports.logout = (req, res) => {
     req.session.destroy();
-    res.json({ message: 'Logout successful' });
+    // res.json({ message: 'Logout successful' });
+    res.redirect('/')
 }
