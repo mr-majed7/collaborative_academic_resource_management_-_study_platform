@@ -48,13 +48,18 @@
         <% if (searchResults && searchResults.length > 0) { %>
             <ul class="list-group">
                 <% searchResults.forEach(result => { %>
-                    <li class="list-group-item my-3 border rounded">
-                        <h5 class="mb-2"><%= result.Title %></h5>
-                        <p class="mb-1"><strong>Type:</strong> <%= result.constructor.name %></p>
-                        <p class="mb-1"><strong>Created by:</strong> <%= result.Folder.User.dataValues.Name %></p>
-                        <% if (result.FileLink) { %>
-                            <p><strong>File Link:</strong> <a href="<%= result.FileLink %>" target="_blank" class="btn btn-link">View File</a></p>
-                        <% } %>
+                    <li class="list-group-item d-flex justify-content-between align-items-center my-3 border rounded">
+                        <div>
+                            <h5 class="mb-2"><%= result.Title %></h5>
+                            <p class="mb-1"><strong>Type:</strong> <%= result.constructor.name %></p>
+                            <p class="mb-1"><strong>Created by:</strong> <%= result.Folder.User.dataValues.Name %></p>
+                            <% if (result.FileLink) { %>
+                                <p><strong>File Link:</strong> <a href="<%= result.FileLink %>" target="_blank" class="btn btn-link">View File</a></p>
+                            <% } %>
+                        </div>
+                        <form action="/bookmark" method="post">
+                            <button type="submit" class="btn btn-outline-primary">Bookmark</button>
+                        </form>
                     </li>
                 <% }); %>
             </ul>
