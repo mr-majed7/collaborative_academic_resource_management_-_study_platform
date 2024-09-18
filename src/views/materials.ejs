@@ -4,78 +4,80 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-
     <title>Adding Materials</title>
 </head>
 <body>
-        <!-- Navbar with Search in Center and Links on Right -->
-        <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
-            <div class="container-fluid">
-                <a class="navbar-brand" href="/">CARMS</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
-                    <!-- Centered Search and Filter Form -->
-                    <form class="d-flex" action="/search" method="post">
-                        <input class="form-control me-2" type="search" placeholder="Search Materials" aria-label="Search" name="query">
-                        <select class="form-select me-2" name="filter">
-                            <option value="all" selected>All</option>
-                            <option value="book">Books</option>
-                            <option value="lectureNotes">Lecture Notes</option>
-                            <option value="slides">Slides</option>
-                            <option value="lectureVideo">Lecture Videos</option>
-                        </select>
-                        <button class="btn btn-light" type="submit">Search</button>
-                    </form>
-                    <!-- Links on the Right -->
-                    <ul class="navbar-nav ms-auto">
-                        <li class="nav-item">
-                            <a class="nav-link active" href="/dashboard/<%= currentUser %>">Dashboard</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/logout">Logout</a>
-                        </li>
-                    </ul>
-                </div>
+    <!-- Navbar with Search in Center and Links on Right -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">CARMS</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+                <!-- Centered Search and Filter Form -->
+                <form class="d-flex align-items-center" action="/search" method="post">
+                    <input class="form-control me-2" type="search" placeholder="Search Materials" aria-label="Search" name="query">
+                    <select class="form-select me-2" name="filter">
+                        <option value="all" selected>All</option>
+                        <option value="book">Books</option>
+                        <option value="lectureNotes">Lecture Notes</option>
+                        <option value="slides">Slides</option>
+                        <option value="lectureVideo">Lecture Videos</option>
+                    </select>
+                    <button class="btn btn-light" type="submit">Search</button>
+                </form>
+                <!-- Links on the Right -->
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/dashboard/<%= currentUser %>">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/logout">Logout</a>
+                    </li>
+                </ul>
             </div>
-        </nav>
-    
+        </div>
+    </nav>
 
-    <section>
-        <h3>Add Books</h3>
-        <form action="/Books/<%= folder_id %>" >
+    <main class="container mt-5 pt-5">
+        <div class="row">
+            <div class="col-lg-6 col-md-8 col-sm-12 mx-auto">
+                <!-- Add Books Section -->
+                <section class="mb-4">
+                    <h3>Add Books</h3>
+                    <form action="/Books/<%= folder_id %>" >
+                        <button type="submit" class="btn btn-primary w-100">+ Book</button>
+                    </form>
+                </section>
 
-            <button>+Book</button>
-        </form>
-    </section>
+                <!-- Add Lecture Notes Section -->
+                <section class="mb-4">
+                    <h3>Add Lecture Notes</h3>
+                    <form action="/lectureNotes/<%= folder_id %>" >
+                        <button type="submit" class="btn btn-primary w-100">+ Lecture Notes</button>
+                    </form>
+                </section>
 
-    <section> 
-        <h3>Add Lecture Notes :</h3>
-        <form action="/lectureNotes/<%=folder_id%>" >
-            <button>+Lecture Notes</button>
-        </form>
-    
-    </section>
-    <section> 
-        <h3>Add Lecture Videos:</h3>
-        <form action="/lectureVideos/<%= folder_id %>">
+                <!-- Add Lecture Videos Section -->
+                <section class="mb-4">
+                    <h3>Add Lecture Videos</h3>
+                    <form action="/lectureVideos/<%= folder_id %>" >
+                        <button type="submit" class="btn btn-primary w-100">+ Lecture Video</button>
+                    </form>
+                </section>
 
-            <button> +LectureVideo</button>
-        </form>
-    
-    </section>
+                <!-- Add Slides Section -->
+                <section class="mb-4">
+                    <h3>Add Slides</h3>
+                    <form action="/slides/<%= folder_id %>" >
+                        <button type="submit" class="btn btn-primary w-100">+ Slides</button>
+                    </form>
+                </section>
+            </div>
+        </div>
+    </main>
 
-    <section> 
-        <h3>Add Slides:</h3>
-        <form action="/slides/<%= folder_id %>">
-
-            <button>+Slides</button>
-        </form>
-        
-    
-    </section>
-
-
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
