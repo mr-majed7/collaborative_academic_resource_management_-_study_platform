@@ -9,6 +9,11 @@
         .filter-sort-container {
             margin-bottom: 20px;
         }
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
     </style>
 </head>
 <body>
@@ -59,14 +64,6 @@
                 </select>
                 <button class="btn btn-info" type="submit">Filter</button>
             </form>
-
-            <form class="d-flex" action="/sort" method="post">
-                <select class="form-select me-2" name="sort" aria-label="Sort by">
-                    <option value="title">Title</option>
-                    <option value="date">Date</option>
-                </select>
-                <button class="btn btn-info" type="submit">Sort</button>
-            </form>
         </div>
 
         <% if(bookDetails.length) {%>
@@ -77,9 +74,17 @@
                         <strong>Title:</strong> <%= book.title %><br>
                         <strong>Link:</strong> <%= book.link %><br>
                         <strong>Privacy:</strong> <%= book.privacy %>
-                        <form action="/Books/revise/<%= book.bookId %>" method="POST" class="mt-2">
-                            <button type="submit" class="btn btn-warning btn-sm">Revise Later</button>
-                        </form>
+                        <div class="action-buttons">
+                            <form action="/Books/revise/<%= book.bookId %>" method="POST">
+                                <button type="submit" class="btn btn-warning btn-sm">Revise Later</button>
+                            </form>
+                            <form action="/Books/edit/<%= book.bookId %>" method="GET">
+                                <button type="submit" class="btn btn-primary btn-sm">Edit</button>
+                            </form>
+                            <form action="/Books/delete/<%= book.bookId %>" method="POST">
+                                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                            </form>
+                        </div>
                     </li>
                 <% }); %>
             </ul>
@@ -93,9 +98,17 @@
                         <strong>Title:</strong> <%= video.title %><br>
                         <strong>Link:</strong> <%= video.link %><br>
                         <strong>Privacy:</strong> <%= video.privacy %>
-                        <form action="/lectureVideos/revise/<%= video.lectureVideoId %>" method="post" class="mt-2">
-                            <button type="submit" class="btn btn-warning btn-sm">Revise Later</button>
-                        </form>
+                        <div class="action-buttons">
+                            <form action="/lectureVideos/revise/<%= video.lectureVideoId %>" method="post">
+                                <button type="submit" class="btn btn-warning btn-sm">Revise Later</button>
+                            </form>
+                            <form action="/lectureVideos/edit/<%= video.lectureVideoId %>" method="GET">
+                                <button type="submit" class="btn btn-primary btn-sm">Edit</button>
+                            </form>
+                            <form action="/lectureVideos/delete/<%= video.lectureVideoId %>" method="POST">
+                                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                            </form>
+                        </div>
                     </li>
                 <% }); %>
             </ul>
@@ -109,9 +122,17 @@
                         <strong>Title:</strong> <%= note.title %><br>
                         <strong>Link:</strong> <%= note.link %><br>
                         <strong>Privacy:</strong> <%= note.privacy %>
-                        <form action="/lectureNotes/revise/<%= note.lectureNoteId %>" method="post" class="mt-2">
-                            <button type="submit" class="btn btn-warning btn-sm">Revise Later</button>
-                        </form>
+                        <div class="action-buttons">
+                            <form action="/lectureNotes/revise/<%= note.lectureNoteId %>" method="post">
+                                <button type="submit" class="btn btn-warning btn-sm">Revise Later</button>
+                            </form>
+                            <form action="/lectureNotes/edit/<%= note.lectureNoteId %>" method="GET">
+                                <button type="submit" class="btn btn-primary btn-sm">Edit</button>
+                            </form>
+                            <form action="/lectureNotes/delete/<%= note.lectureNoteId %>" method="POST">
+                                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                            </form>
+                        </div>
                     </li>
                 <% }); %>
             </ul>
@@ -125,9 +146,17 @@
                         <strong>Title:</strong> <%= slide.title %><br>
                         <strong>Link:</strong> <%= slide.link %><br>
                         <strong>Privacy:</strong> <%= slide.privacy %>
-                        <form action="/slides/revise/<%= slide.slideId %>" method="post" class="mt-2">
-                            <button type="submit" class="btn btn-warning btn-sm">Revise Later</button>
-                        </form>
+                        <div class="action-buttons">
+                            <form action="/slides/revise/<%= slide.slideId %>" method="post">
+                                <button type="submit" class="btn btn-warning btn-sm">Revise Later</button>
+                            </form>
+                            <form action="/slides/edit/<%= slide.slideId %>" method="GET">
+                                <button type="submit" class="btn btn-primary btn-sm">Edit</button>
+                            </form>
+                            <form action="/slides/delete/<%= slide.slideId %>" method="POST">
+                                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                            </form>
+                        </div>
                     </li>
                 <% }); %>
             </ul>
